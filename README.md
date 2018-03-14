@@ -15,3 +15,5 @@ https://tehnoblog.org/phpmyadmin-error-connection-for-controluser-as-defined-in-
 Wordpress:
 
 https://www.digitalocean.com/community/tutorials/how-to-install-wordpress-with-lamp-on-ubuntu-16-04
+
+Got to the apache2.conf and PORTS.conf if you want to change the ports you have to change the Listening port as well in apache2 ports conf.

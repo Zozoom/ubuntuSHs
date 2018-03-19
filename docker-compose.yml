@@ -1,0 +1,65 @@
+version: '2'
+
+services:
+
+  mariadb_1:
+    image: 'bitnami/mariadb:latest'
+    volumes:
+      - 'mariadb_data:/db1'
+    ports:
+      - '3307'
+    environment:
+      - MARIADB_USER=bn_wordpress
+      - MARIADB_DATABASE=bitnami_wordpress
+      - MARIADB_PORT_NUMBER=3307
+      - ALLOW_EMPTY_PASSWORD=yes
+
+  mariadb_2:
+    image: 'bitnami/mariadb:latest'
+    volumes:
+      - 'mariadb_data:/db2'
+    ports:
+      - '3306'
+    environment:
+      - MARIADB_USER=bn_wordpress
+      - MARIADB_PORT_NUMBER=3306
+      - MARIADB_DATABASE=bitnami_wordpress
+      - ALLOW_EMPTY_PASSWORD=yes
+
+  wordpress_1:
+    image: 'bitnami/wordpress:latest'
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - 'wordpress_data:/db1'
+    depends_on:
+      - mariadb_1
+    environment:
+      - MARIADB_HOST=mariadb_1
+      - MARIADB_PORT_NUMBER=3307
+      - WORDPRESS_DATABASE_USER=bn_wordpress
+      - WORDPRESS_DATABASE_NAME=bitnami_wordpress
+      - ALLOW_EMPTY_PASSWORD=yes
+
+  wordpress_2:
+    image: 'bitnami/wordpress:latest'
+    ports:
+      - '81:80'
+      - '444:443'
+    volumes:
+      - 'wordpress_data:/db2'
+    depends_on:
+      - mariadb_2
+    environment:
+      - MARIADB_HOST=mariadb_2
+      - MARIADB_PORT_NUMBER=3306
+      - WORDPRESS_DATABASE_USER=bn_wordpress
+      - WORDPRESS_DATABASE_NAME=bitnami_wordpress
+      - ALLOW_EMPTY_PASSWORD=yes
+
+volumes:
+  mariadb_data:
+    driver: local
+  wordpress_data:
+    driver: local

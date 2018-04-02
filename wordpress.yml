@@ -1,0 +1,44 @@
+version: '3.3'
+
+networks:
+  default:
+    external:
+      name: mynetwork
+
+services:
+
+  mariadb_2:
+    image: 'bitnami/mariadb:latest'
+    restart: always
+    volumes:
+      - './wpdb:/bitnami'
+    ports:
+      - '3306'
+    environment:
+      - MARIADB_ROOT_USER=root
+      - MARIADB_ROOT_PASSWORD=wpadmin
+      - MARIADB_PORT_NUMBER=3306
+      - MARIADB_DATABASE=wordpress
+
+  wordpress_2:
+    image: 'bitnami/wordpress:latest'
+    restart: always
+    ports:
+      - '8181:80'
+      - '443:443'
+    volumes:
+      - './wp:/bitnami'
+    depends_on:
+      - mariadb_2
+    environment:
+      - MARIADB_HOST=mariadb_2
+      - MARIADB_PORT_NUMBER=3306
+      - WORDPRESS_DATABASE_PASSWORD=wpadmin
+      - WORDPRESS_DATABASE_USER=root
+      - WORDPRESS_DATABASE_NAME=wordpress
+
+      - WORDPRESS_EMAIL=user@example.com
+      - WORDPRESS_FIRST_NAME=FirstName
+      - WORDPRESS_LAST_NAME=LastName
+      - WORDPRESS_PASSWORD=Diopug
+      - WORDPRESS_USERNAME=wpadmin

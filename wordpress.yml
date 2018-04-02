@@ -40,5 +40,5 @@ services:
       - WORDPRESS_EMAIL=user@example.com
       - WORDPRESS_FIRST_NAME=FirstName
       - WORDPRESS_LAST_NAME=LastName
-      - WORDPRESS_PASSWORD=Diopug
+      - WORDPRESS_PASSWORD=example
       - WORDPRESS_USERNAME=wpadmin

@@ -1,3 +1,4 @@
+
 version: '3.3'
 
 networks:
@@ -40,5 +41,7 @@ services:
       - WORDPRESS_EMAIL=user@example.com
       - WORDPRESS_FIRST_NAME=FirstName
       - WORDPRESS_LAST_NAME=LastName
-      - WORDPRESS_PASSWORD=example
+      - WORDPRESS_PASSWORD=Diopug
       - WORDPRESS_USERNAME=wpadmin
+
+

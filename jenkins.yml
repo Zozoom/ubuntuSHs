@@ -1,0 +1,14 @@
+version: '3.3'
+
+services:
+  jenkins:
+    image: 'bitnami/jenkins:latest'
+    restart: always
+    ports:
+      - '8282:8080'
+      - '8443:8443'
+    environment:
+    - JENKINS_USER=admin
+    - JENKINS_PASSWORD=admin
+    volumes:
+      - './jenkinsdata:/bitnami'

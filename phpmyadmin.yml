@@ -3,23 +3,28 @@ version: '3.3'
 networks:
  default:
     external:
-      name: mynetwork
+      name: myNet
 
 services:
-
   mariadb_php:
     image: 'bitnami/mariadb:latest'
     restart: always
+    user: root
+    ports:
+       - '3306:3306'
     environment:
-      - ALLOW_EMPTY_PASSWORD=yes
-    volumes:
-      - mariadb_data:/bitnami
+      - ALLOW_EMPTY_PASSWORD=no
+      - MARIADB_ROOT_PASSWORD=root
+      - MARIADB_USER=root
+      - MARIADB_PASSWORD=root
+      - MARIADB_DATABASE=mariadb_php
 
   phpmyadmin:
     image: bitnami/phpmyadmin:latest
     restart: always
+    user: root
     links:
-      - mariadb_php:mysql
+      - mariadb_php:mariadb
     depends_on:
       - mariadb_php
     ports:
@@ -27,11 +32,7 @@ services:
       - '448:443'
     environment:
       - PHPMYADMIN_ALLOW_NO_PASSWORD=false
-    volumes:
-      - phpmyadmin_data:/bitnami
-
-volumes:
-  mariadb_data:
-    driver: local
-  phpmyadmin_data:
-    driver: local
+      PMA_USER=admin
+      PMA_PASSWORD=admin
+      PMA_HOST=mariadb_php
+      PMA_PORT=3306

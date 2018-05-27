@@ -1,0 +1,23 @@
+phpmyadmin/pma/phpmyadmin/config.inc.php
+
+** Setting up the Server connections in Php file. **
+
+$i++;   
+$cfg['Servers'][$i]['verbose']          = 'QA Db';
+$cfg['Servers'][$i]['host']             = 'mariadb_qa';
+$cfg['Servers'][$i]['port']             = '3306';
+$cfg['Servers'][$i]['connect_type']     = 'tcp';
+$cfg['Servers'][$i]['extension']        = 'mysqli';
+$cfg['Servers'][$i]['compress']         = false;
+$cfg['Servers'][$i]['auth_type']        = 'cookie';
+$cfg['Servers'][$i]['AllowNoPassword']  = false;
+
+$i++;   
+$cfg['Servers'][$i]['verbose']          = 'Dev Db';
+$cfg['Servers'][$i]['host']             = 'mariadb_dev';
+$cfg['Servers'][$i]['port']             = '3306';
+$cfg['Servers'][$i]['connect_type']     = 'tcp';
+$cfg['Servers'][$i]['extension']        = 'mysqli';
+$cfg['Servers'][$i]['compress']         = false;
+$cfg['Servers'][$i]['auth_type']        = 'cookie';
+$cfg['Servers'][$i]['AllowNoPassword']  = false;

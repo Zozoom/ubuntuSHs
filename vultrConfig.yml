@@ -1,0 +1,73 @@
+version: '3.3'
+networks:
+ default:
+    external:
+      name: myNet
+services:
+
+  # JENKINS CONFIG
+  jenkins:
+    image: 'bitnami/jenkins:latest'
+    restart: always
+    user: root
+    ports:
+      - '8080:8080'
+      - '8443:8443'
+    environment:
+    - JENKINS_USER=somepass
+    - JENKINS_PASSWORD=somepass
+    volumes:
+      - './jenkins:/bitnami'
+      
+  # QA DATABASE CONFIG
+  mariadb_qa:
+    image: 'bitnami/mariadb:latest'
+    restart: always
+    user: root
+    ports:
+       - '3307:3306'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=no
+      - MARIADB_ROOT_PASSWORD=somepass
+      - MARIADB_DATABASE=mariadb_qa
+      - MARIADB_USER=somepass
+      - MARIADB_PASSWORD=somepass
+    volumes:
+      - ./qaDb:/bitnami
+  
+  # DEV DATABASE CONFIG
+  mariadb_dev:
+    image: 'bitnami/mariadb:latest'
+    restart: always
+    user: root
+    ports:
+      - '3306:3306'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=no
+      - MARIADB_ROOT_PASSWORD=somepass
+      - MARIADB_DATABASE=mariadb_dev
+      - MARIADB_USER=somepass
+      - MARIADB_PASSWORD=somepass
+    volumes:
+      - ./devDb:/bitnami
+  
+  # PHPMYADMIN CONFIG
+  phpmyadmin:
+    image: 'bitnami/phpmyadmin:latest'
+    restart: always
+    user: root
+    links:
+      - mariadb_qa:mariadb
+      - mariadb_dev:mariadb
+    depends_on:
+      - mariadb_qa
+      - mariadb_dev
+    ports:
+      - '8181:80'
+      - '448:443'
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOSTS=mariadb_qa,mariadb_dev
+      - PMA_PORTS=3306,3307
+    volumes:
+      - ./pma:/bitnami
